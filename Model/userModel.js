@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 var userSchema = new Schema(
     {
         name: {
@@ -23,7 +22,10 @@ var userSchema = new Schema(
         },
         password: {
             type: String,
-            required: [true, 'Please provide a password']
+            // required: [true, 'Please provide a password']
+        },
+        googleId:{
+        type: String
         }
     }
 );
