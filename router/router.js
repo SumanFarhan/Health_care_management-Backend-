@@ -42,7 +42,10 @@ routes.get('/auth/google/callback',
         User.findOne({ googleId: req.user.id }, (err, user) => {
             if (err) { return res.send(err); }
             if (user) { 
-                // console.log("inside ",req.user)
+                console.log("inside ",req.user)
+                // return res.send(req.user).then(res=>{
+                //     res.redirect('http://localhost:3000/dashboard')
+                // })
                 return res.redirect('http://localhost:3000/dashboard/'+req.user.displayName)
         }
 
