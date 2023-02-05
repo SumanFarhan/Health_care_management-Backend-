@@ -3,7 +3,7 @@ const app = express();
 const routes = require('./router/router')
 const mongoose = require('mongoose');
 const cors=require('cors')
-const cookieSession=require('cookie-session');
+const session = require('express-session');
 const passport = require('passport');
 const passportSetup=require('./passport')
 
@@ -25,12 +25,17 @@ process.on('UnhandledRejection', error => {
     console.log('DB error', error);
 });
   
-app.use(
-    cookieSession(
-    {name: "session" , 
-    keys: ["lama"], 
-    maxAge: 24 * 68 * 60 * 100})
-    )
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+  }));
+// app.use(
+//     cookieSession(
+//     {name: "session" , 
+//     keys: ["lama"], 
+//     maxAge: 24 * 68 * 60 * 100})
+//     )
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors({

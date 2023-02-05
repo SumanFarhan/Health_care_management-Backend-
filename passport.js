@@ -12,27 +12,20 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/google/callback'
 },
   async (accessToken, refreshToken, email, cb) => {
-    // const defaultUser = {
-    //   googleId: email.id,
-    //   name: email.displayName,
-    //   email: email.emails[0].value
-    // }
-
-    // const user = await User.findorCreate({ where: { googleId: email.id }, defaults: defaultUser }).catch((err)=>{
-    //   console.log(err)
-    //   cb(err,null)
-    // })
-
-    // if(user && user[0]) return cb(null,user && user[0])
-
-    // passport callback function
-    // accessToken is the token to call Google API
-    // profile is the user's profile information from Google
-    // console.log('Email',email)
     return cb(null, email);
   }
 ));
 
+// Serialize the user for the session
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
+
+// Deserialize the user from the session
+// passport.deserializeUser((user, done) => {
+//   console.log(user,"From deserialize")
+//   done(null, user);
+// });
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -54,23 +47,3 @@ passport.deserializeUser(async(id, done) => {
 
 
 
-// passport.use(new GoogleStrategy({
-//   clientID: GOOGLE_CLIENT_ID,
-//   clientSecret: GOOGLE_CLIENT_SECRET,
-//   callbackURL: "/auth/google/callback"
-// },
-//   function (accessToken, refreshToken, profile, cb) {
-//     return cb(null,profile)
-//     // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//     //   return cb(err, user);
-//     // });
-//   }
-// ));
-
-// passport.serializeUser((user, done) => {
-//   done(null, user)
-// })
-
-// passport.deserializeUser((user, done) => {
-//   done(null, user)
-// })
