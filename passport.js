@@ -34,9 +34,6 @@ passport.serializeUser((user, done) => {
 
 
 passport.deserializeUser(async(id, done) => {
-  // User.findOne({googleId:id}, (err, user) => {
-  //   done(err, user);
-  // });
   const user= await User.findOne({googleId:id}).catch((err)=>{
       console.log(err)
       done(err,null)
