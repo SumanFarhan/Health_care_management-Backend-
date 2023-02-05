@@ -11,29 +11,48 @@ passport.use(new GoogleStrategy({
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: '/auth/google/callback'
 },
-(accessToken, refreshToken, email, cb) => {
-  // passport callback function
-  // accessToken is the token to call Google API
-  // profile is the user's profile information from Google
-  // console.log('Email',email)
-  return cb(null, email);
-}
+  async (accessToken, refreshToken, email, cb) => {
+    // const defaultUser = {
+    //   googleId: email.id,
+    //   name: email.displayName,
+    //   email: email.emails[0].value
+    // }
+
+    // const user = await User.findorCreate({ where: { googleId: email.id }, defaults: defaultUser }).catch((err)=>{
+    //   console.log(err)
+    //   cb(err,null)
+    // })
+
+    // if(user && user[0]) return cb(null,user && user[0])
+
+    // passport callback function
+    // accessToken is the token to call Google API
+    // profile is the user's profile information from Google
+    // console.log('Email',email)
+    return cb(null, email);
+  }
 ));
 
 
-passport.deserializeUser((user, done) => {
-  done(null, user)
-})
 passport.serializeUser((user, done) => {
-done(null, user.id);
+  done(null, user.id);
 });
 
-// passport.deserializeUser((id, done) => {
-//   // done(null, id)
-// User.findById(id, (err, user) => {
-//   done(err, user);
-// });
-// });
+
+
+passport.deserializeUser(async(id, done) => {
+  // User.findOne({googleId:id}, (err, user) => {
+  //   done(err, user);
+  // });
+  const user= await User.findOne({googleId:id}).catch((err)=>{
+      console.log(err)
+      done(err,null)
+    })
+    if(user) done(null,user)
+  
+});
+
+
 
 // passport.use(new GoogleStrategy({
 //   clientID: GOOGLE_CLIENT_ID,
